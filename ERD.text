@@ -1,0 +1,93 @@
+-- DML 
+-- Tabel untuk informasi pengguna
+CREATE TABLE user_info (
+    user_id SERIAL PRIMARY KEY,
+    first_name VARCHAR(225),
+    last_name VARCHAR(225),
+    email VARCHAR(225) UNIQUE,
+    password VARCHAR(250),
+    phone_number VARCHAR(100),
+    address VARCHAR(100)
+);
+
+-- Tabel untuk profil pengguna
+CREATE TABLE profile (
+    profile_id SERIAL PRIMARY KEY,
+    user_id INTEGER,
+    birthday DATE,
+    profile_picture BYTEA,
+    FOREIGN KEY (user_id) REFERENCES user_info(user_id)
+);
+
+-- Tabel untuk merek handphone
+CREATE TABLE handphone_brands (
+    brand_id SERIAL PRIMARY KEY,
+    brand_title TEXT
+);
+
+-- Tabel untuk jenis tipe handphone
+CREATE TABLE product_type (
+    product_id SERIAL PRIMARY KEY,
+    brand_id INTEGER,
+    product_title VARCHAR(250),
+    price DECIMAL,
+    description TEXT,
+    stock INTEGER,
+    product_keyword TEXT,
+    FOREIGN KEY (brand_id) REFERENCES handphone_brands(brand_id)
+);
+
+-- Tabel untuk kode promo
+CREATE TABLE code_promo (
+    code_promo_id SERIAL PRIMARY KEY,
+    promo_code VARCHAR(50),
+    discount DECIMAL,
+    expiry_date DATE
+);
+
+-- Tabel untuk transaksi handphone
+CREATE TABLE transaction_phone (
+    transaction_id SERIAL PRIMARY KEY,
+    user_id INTEGER,
+    product_id INTEGER,
+    is_paid BOOLEAN,
+    code_promo_id INTEGER,
+    description TEXT,
+    FOREIGN KEY (user_id) REFERENCES user_info(user_id),
+    FOREIGN KEY (product_id) REFERENCES product_type(product_id),
+    FOREIGN KEY (code_promo_id) REFERENCES code_promo(code_promo_id)
+);
+
+-- Insert Data 
+INSERT INTO user_info (user_id, first_name, last_name, email, password, phone_number, address)
+VALUES 
+(14097, 'Daniela', 'Kim', 'danielnewjeans@gmail.com', 'awandua1234', '628-345-1234', 'Jalan Tukad Pakerisan, Denpasar, Bali'), 
+(16085, 'Krystal', 'Jung', 'iceprincess@gmail.com', 'adminhp1212', '628-456-4321', 'Jalan Putra Yudha, Gianyar, Bali'), 
+(24014, 'Mark', 'Lee', 'markleews12@gmail.com', 'watermelon098', '628-123-0987', 'Jalan Raya Bedugul, Tabanan'), 
+(10004, 'Yangyang', 'Lim', 'yangyangwayv@gmail.com', 'itsmycat999', '628-098-5678', 'Gang 4 Jalan Tukad Yeh Aye, Denpasar Selatan, Bali'), 
+(45075, 'Joohoney', 'Park', 'itsjohoneytime@gmail.com', 'monstax0610', '628-321-7654', 'Banjar Kawan, Desa Abiansemal, Karangasem, Bali'); 
+
+INSERT INTO handphone_brands (brand_id, brand_title)
+VALUES 
+(880554,'Samsung'),
+(550514,'Apple'),
+(470554,'Xiaomi'),
+(978001,'Realme'),
+(453031,'Vivo'),
+(101134,'Huawei'),
+(493782,'Oppo'),
+(766298,'Asus'),
+(295786,'LG');
+
+INSERT INTO product_type (product_id, brand_id, product_title, price, description, stock, product_keyword)
+VALUES 
+(10986700, 880554, 'Samsung Galaxy S23', 11.499.500, 'High-end smartphone', 10, 'Samsung Galaxy'),
+(65786576, 550514, 'Iphone Pro Max 14', 19.499.000, 'High-end smartphone', 14, 'Iphone 14'),
+(45006978, 470554, 'Xiaomi Redmi Note 12 Pro 4G', 3.125.000, 'Middle-end smartphone', 10, 'Redmi Note 12'),
+(13547646, 880554, 'Samsung Galaxy A24 LTE', 3.399.000, 'Middle-end smartphone', 10, 'Samsung ASeries'),
+(34352243, 101134, 'Huawei Nova 9', 6.105.000, 'Middle-end smartphone', 10, 'Huawei Nova'),
+(98758646, 453031, 'Vivo V27 5G', 4.499.500, 'Middle-end smartphone', 10, 'Vivo V27'),
+(43652276, 880554, 'Samsung Galaxy S23', 11.499.500, 'Low-end smartphone', 10, 'Samsung Galaxy'),
+(75638627, 880554, 'Samsung Galaxy S23', 11.499.500, 'Low-end smartphone', 10, 'Samsung Galaxy'),
+
+SELECT*FROM code_promo
